@@ -50,3 +50,13 @@ exports.postArticleCommentModel = (newComment, article_id) => {
 
     .then(({ rows }) => rows[0]);
 };
+
+exports.patchArticleByIdModel = (voteCount, article_id) => {
+  let SQL = `UPDATE articles SET votes = votes + $1 
+      WHERE article_id = $2
+      RETURNING *;`;
+  return db
+    .query(SQL, [voteCount, article_id])
+
+    .then(({ rows }) => rows[0]);
+};
