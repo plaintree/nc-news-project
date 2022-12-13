@@ -15,7 +15,6 @@ describe("3. GET /api/topics", () => {
       .expect(200)
       .then(({ body }) => {
         const { topics } = body;
-
         expect(topics).toHaveLength(3);
 
         topics.forEach((topic) => {
@@ -47,7 +46,6 @@ describe("4. GET /api/articles", () => {
       .expect(200)
       .then(({ body }) => {
         const { articles } = body;
-
         expect(articles).toHaveLength(12);
         expect(articles).toBeSorted("created_at", { descending: true });
 
@@ -309,6 +307,38 @@ describe("7. POST /api/articles/:article_id/comments/", () => {
       .then(({ body }) => {
         const { msg } = body;
         expect(msg).toBe("Out Of Range For Type Integer");
+      });
+  });
+});
+
+describe("9. GET /api/users", () => {
+  it("status:200, should responds with an array of topics", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        const { users } = body;
+        expect(users).toHaveLength(4);
+
+        users.forEach((topic) => {
+          expect(topic).toEqual(
+            expect.objectContaining({
+              username: expect.any(String),
+              name: expect.any(String),
+              avatar_url: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+
+  it("status:404, should responds with error message when the path is invalid", () => {
+    return request(app)
+      .get("/api/usersssssssss")
+      .expect(404)
+      .then(({ body }) => {
+        const { msg } = body;
+        expect(msg).toBe("Route not found");
       });
   });
 });

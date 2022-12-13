@@ -12,3 +12,8 @@ exports.checkUserExists = (username) => {
     } else return Promise.resolve(rows);
   });
 };
+
+exports.getUsersModel = () => {
+  let SQL = `SELECT * FROM users`;
+  return db.query(SQL).then(({ rows }) => rows);
+};
