@@ -236,7 +236,7 @@ describe("7. POST /api/articles/:article_id/comments/", () => {
       });
   });
 
-  it("status:404, should responds with error message when user does not exists in database but still post comment", () => {
+  it("status:404, should responds with error message when user does not exists in database but still trying to post comment", () => {
     const newPost = {
       username: "some_random_dude",
       body: "test body",
@@ -261,7 +261,7 @@ describe("7. POST /api/articles/:article_id/comments/", () => {
       .expect(400)
       .then(({ body }) => {
         const { msg } = body;
-        expect(msg).toBe("Not Null Violation");
+        expect(msg).toBe("Malformed Request Body");
       });
   });
 
@@ -321,15 +321,17 @@ describe("8. PATCH /api/articles/:article_id", () => {
       .then(({ body }) => {
         const { article } = body;
 
-        expect(article).toEqual({
-          article_id: 1,
-          title: "Living in the shadow of a great man",
-          topic: "mitch",
-          author: "butter_bridge",
-          body: "I find this existence challenging",
-          created_at: "2020-07-09T20:11:00.000Z",
-          votes: 101,
-        });
+        expect(article).toEqual(
+          expect.objectContaining({
+            article_id: 1,
+            title: "Living in the shadow of a great man",
+            topic: "mitch",
+            author: "butter_bridge",
+            body: "I find this existence challenging",
+            created_at: "2020-07-09T20:11:00.000Z",
+            votes: 101,
+          })
+        );
       });
   });
   it("status:200, should responds with the update article vote when inc_votes is negative", () => {
@@ -341,15 +343,17 @@ describe("8. PATCH /api/articles/:article_id", () => {
       .then(({ body }) => {
         const { article } = body;
 
-        expect(article).toEqual({
-          article_id: 1,
-          title: "Living in the shadow of a great man",
-          topic: "mitch",
-          author: "butter_bridge",
-          body: "I find this existence challenging",
-          created_at: "2020-07-09T20:11:00.000Z",
-          votes: 90,
-        });
+        expect(article).toEqual(
+          expect.objectContaining({
+            article_id: 1,
+            title: "Living in the shadow of a great man",
+            topic: "mitch",
+            author: "butter_bridge",
+            body: "I find this existence challenging",
+            created_at: "2020-07-09T20:11:00.000Z",
+            votes: 90,
+          })
+        );
       });
   });
   it("status:200, should responds with the unchanged article vote when inc_votes is zero", () => {
@@ -361,15 +365,17 @@ describe("8. PATCH /api/articles/:article_id", () => {
       .then(({ body }) => {
         const { article } = body;
 
-        expect(article).toEqual({
-          article_id: 1,
-          title: "Living in the shadow of a great man",
-          topic: "mitch",
-          author: "butter_bridge",
-          body: "I find this existence challenging",
-          created_at: "2020-07-09T20:11:00.000Z",
-          votes: 100,
-        });
+        expect(article).toEqual(
+          expect.objectContaining({
+            article_id: 1,
+            title: "Living in the shadow of a great man",
+            topic: "mitch",
+            author: "butter_bridge",
+            body: "I find this existence challenging",
+            created_at: "2020-07-09T20:11:00.000Z",
+            votes: 100,
+          })
+        );
       });
   });
   it("status:400, should responds with error message vote when inc_votes is invalid", () => {
@@ -391,7 +397,7 @@ describe("8. PATCH /api/articles/:article_id", () => {
       .expect(400)
       .then(({ body }) => {
         const { msg } = body;
-        expect(msg).toBe("Not Null Violation");
+        expect(msg).toBe("Malformed Request Body");
       });
   });
   it("status:400, should responds with error message when article_id is invalid", () => {
